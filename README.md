@@ -1,17 +1,12 @@
-# @villemontreal/core-utils-mongo-nodejs-lib
-
+# @villedemontreal/mongo
 Module d'utilitaires pour les connections de Mongo.
-
-## Availabililty
-
-https://bitbucket.org/villemontreal/core-utils-mongo-nodejs-lib
 
 ## Installation
 
 Installer la bibliothèque:
 
 ```shell
-    npm install --save @villemontreal/core-utils-mongo-nodejs-lib
+    npm install --save @villedemontreal/mongo
 ```
 
 ## Configuration pour utilisation dans Docker
@@ -37,12 +32,11 @@ https://jira.mongodb.org/browse/SERVER-44491
 
 ## Utilisation
 
-Il faut premièrement initialiser la librairie elle-même. Par exemple, dans un projet d'API basé sur le générateur
-[generator-mtl-node-api](https://bitbucket.org/villemontreal/generator-mtl-node-api), ceci sera effectué dans le
+Il faut premièrement initialiser la librairie elle-même. Par exemple, dans un projet d'API basé sur le générateur, ceci sera effectué dans le
 fichier "`src/init.ts`", au début de la fonction `initComponents()` :
 
 ```typescript
-import { init as initMongoUtilsLib } from '@villemontreal/core-utils-mongo-nodejs-lib';
+import { init as initMongoUtilsLib } from '@villedemontreal/mongo';
 import { createLogger } from './utils/logger';
 
 // ...
@@ -61,7 +55,7 @@ appropriées.
 Par exemple :
 
 ```typescript
-import { initMongoose, IMongooseConfigs } from "@villemontreal/test-core-utils-mongo-nodejs-lib";
+import { initMongoose, IMongooseConfigs } from "@villedemontreal/mongo";
 import { configs } from "../../../../config/configs";
 
 await initMongoose( new IMongooseConfigs {
@@ -122,13 +116,10 @@ Voir [cette issue](https://github.com/mochajs/mocha/issues/2018) pour plus de d�
 
 Le but du plugin est de faciliter l'intégration de la pagination dans nos systèmes et de standardiser l'output afin de faciliter la consomation.
 
-L'output suit le guide API de la ville :
-https://sticonfluence.interne.montreal.ca/display/AES/REST+API?focusedCommentId=42766100#RESTAPI-Pagination.1
-
 ### Utilisation
 
 ```typescript
-import { mongoosePaginate } from '@villemontreal/core-utils-mongo-nodejs-lib';
+import { mongoosePaginate } from '@villedemontreal/mongo';
 var schema = new mongoose.Schema({
   /* schema definition */
 });
@@ -230,6 +221,6 @@ vous désirez tester la librairie modifiée _dans un container Docker_.
 
 # Aide / Contributions
 
-Pour obtenir de l'aide avec cette librairie, vous pouvez poster sur la salle Google Chat [dev-discussions](https://chat.google.com/room/AAAASmiQveI).
+Pour obtenir de l'aide avec cette librairie, vous pouvez poster sur la salle Google Chat [dev-discussions]
 
 Notez que les contributions sous forme de pull requests sont bienvenues.
