@@ -1,0 +1,21 @@
+{
+    "version": "0.1.0",
+    "command": "${workspaceRoot}/node_modules/.bin/gulp",
+    "windows": {
+        "command": "${workspaceRoot}\\node_modules\\.bin\\gulp.cmd"
+    },
+    "isShellCommand": true,
+    "showOutput": "always",
+    "suppressTaskName": true,
+    "tasks": [
+        {
+            "taskName": "tsc",
+            "args": [
+                "compile",
+                "exit"
+            ],
+            "isBuildCommand": true,
+            "problemMatcher": "$tsc"
+        }
+    ]
+}
