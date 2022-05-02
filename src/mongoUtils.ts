@@ -113,7 +113,7 @@ export class MongoUtils {
           version: mongoServerVersion ? mongoServerVersion : 'latest', // by default 'latest'
           downloadDir: downloadDirPath // by default node_modules/.cache/mongodb-memory-server/mongodb-binaries
         },
-        debug: true
+        debug: false
       };
 
       if (useReplSet) {
