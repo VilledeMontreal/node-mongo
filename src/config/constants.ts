@@ -39,16 +39,16 @@ export class Constants {
       connectionString: 'mock',
       connectionOptions: {
         useNewUrlParser: true,
-        useUnifiedTopology: true
+        useUnifiedTopology: true,
       },
       updater: {
         lockMaxAgeSeconds: 30,
         mongoSchemaUpdatesDirPath: '/dist/tests/testingMongoUpdates',
-        appSchemaCollectionName: 'testAppSchema'
+        appSchemaCollectionName: 'testAppSchema',
       },
       mockServer: {
-        serverVersion: '4.0.16'
-      }
+        serverVersion: '4.0.16',
+      },
     };
   }
 
@@ -64,7 +64,7 @@ export class Constants {
          * This option is only available on the "development"
          * environment, or when tests are ran.
          */
-        MOCK_CONNECTION_STRING: 'mock'
+        MOCK_CONNECTION_STRING: 'mock',
       },
       /**
        * The names of the Mongo collections used in
@@ -75,7 +75,7 @@ export class Constants {
          * Special collection that stores informations about the
          * schema currently installed for the application.
          */
-        APP_SCHEMA: 'appSchema'
+        APP_SCHEMA: 'appSchema',
       },
       /**
        * Mongo error codes
@@ -84,7 +84,7 @@ export class Constants {
         /**
          * The code for a Mongo "duplicate key" error.
          */
-        DUPLICATE_KEY: 11000
+        DUPLICATE_KEY: 11000,
       },
 
       /**
@@ -98,25 +98,25 @@ export class Constants {
           /**
            * The code for a Mongoose "required" error.
            */
-          REQUIRED_FIELD: 'required'
+          REQUIRED_FIELD: 'required',
         },
 
         /**
          *  Mongoose error kinds
          */
         errorKinds: {
-          OBJECT_ID: 'ObjectId'
+          OBJECT_ID: 'ObjectId',
         },
 
         /**
          *  Mongoose error names
          */
         errorNames: {
-          CAST_ERROR: 'CastError'
-        }
-      }
+          CAST_ERROR: 'CastError',
+        },
+      },
     };
   }
 }
 
-export let constants: Constants = new Constants();
+export const constants: Constants = new Constants();

@@ -13,9 +13,9 @@ export default async function update(db: MongoDb.Db): Promise<void> {
     {
       key: {
         firstName: 1,
-        lastName: 1
+        lastName: 1,
       },
-      name: 'firstName_lastName'
-    }
+      name: 'firstName_lastName',
+    },
   ]);
 }

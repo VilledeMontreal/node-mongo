@@ -62,14 +62,14 @@ export class MongooseConfigs implements IMongooseConfigs {
    * @param applyUpdates Should the database be checked for missing
    * updates and have them applied if required?
    */
-  public applyUpdates: boolean = true;
+  public applyUpdates = true;
 
   /**
    * If no connectionString is provided, "mock" will be
    * used by default and a temporary Mongo server will
    * be used.
    */
-  public connectionString: string = 'mock';
+  public connectionString = 'mock';
 
   public connectionOptions: any = {
     w: 1,
@@ -77,10 +77,14 @@ export class MongooseConfigs implements IMongooseConfigs {
     auto_reconnect: true,
     reconnectTries: 604800,
     reconnectInterval: 1000,
-    useNewUrlParser: true
+    useNewUrlParser: true,
   };
 
-  public updater: { lockMaxAgeSeconds: number; mongoSchemaUpdatesDirPath: string; appSchemaCollectionName: string } = {
+  public updater: {
+    lockMaxAgeSeconds: number;
+    mongoSchemaUpdatesDirPath: string;
+    appSchemaCollectionName: string;
+  } = {
     appSchemaCollectionName: constants.mongo.collectionNames.APP_SCHEMA,
     lockMaxAgeSeconds: 60,
 
@@ -89,11 +93,11 @@ export class MongooseConfigs implements IMongooseConfigs {
      * where the update files are.
      * Required!
      */
-    mongoSchemaUpdatesDirPath: null
+    mongoSchemaUpdatesDirPath: null,
   };
 
   public mockServer: { serverVersion: string } = {
-    serverVersion: '3.2.1'
+    serverVersion: '3.2.1',
   };
 
   /**
@@ -142,28 +146,42 @@ export class MongooseConfigs implements IMongooseConfigs {
 
     if (!_.isNil(overridingConfigs.applyUpdates)) {
       if (!_.isBoolean(overridingConfigs.applyUpdates)) {
-        throw new Error(`The applyUpdates config must be a boolean: ${overridingConfigs.applyUpdates}`);
+        throw new Error(
+          `The applyUpdates config must be a boolean: ${overridingConfigs.applyUpdates}`
+        );
       }
       this.applyUpdates = overridingConfigs.applyUpdates;
     }
 
     if (!_.isNil(overridingConfigs.connectionString)) {
-      if (!_.isString(overridingConfigs.connectionString) || utils.isBlank(overridingConfigs.connectionString)) {
-        throw new Error(`The connectionString config is not valid : ${overridingConfigs.connectionString}`);
+      if (
+        !_.isString(overridingConfigs.connectionString) ||
+        utils.isBlank(overridingConfigs.connectionString)
+      ) {
+        throw new Error(
+          `The connectionString config is not valid : ${overridingConfigs.connectionString}`
+        );
       }
       this.connectionString = overridingConfigs.connectionString;
     } else {
-      logger.warning(`No "connectionString" config was provided: a *mocked* Mongo server will be used!`);
+      logger.warning(
+        `No "connectionString" config was provided: a *mocked* Mongo server will be used!`
+      );
     }
 
     if (!_.isNil(overridingConfigs.connectionOptions)) {
       if (!_.isObject(overridingConfigs.connectionOptions)) {
-        throw new Error(`The connectionOptions config is not valid : ${overridingConfigs.connectionString}`);
+        throw new Error(
+          `The connectionOptions config is not valid : ${overridingConfigs.connectionString}`
+        );
       }
       this.connectionOptions = overridingConfigs.connectionOptions;
     }
 
-    if (!_.isNil(overridingConfigs.mockServer) && !_.isNil(overridingConfigs.mockServer.serverVersion)) {
+    if (
+      !_.isNil(overridingConfigs.mockServer) &&
+      !_.isNil(overridingConfigs.mockServer.serverVersion)
+    ) {
       if (
         !_.isString(overridingConfigs.mockServer.serverVersion) ||
         utils.isBlank(overridingConfigs.mockServer.serverVersion)

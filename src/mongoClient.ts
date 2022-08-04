@@ -36,7 +36,10 @@ export async function initMongoose(mongooseConfig: IMongooseConfigs): Promise<mo
       // ==========================================
       // Mock!
       // ==========================================
-      const mongoServer = await mongoUtils.mockMongoose(null, mongooseConfigClean.mockServer.serverVersion);
+      const mongoServer = await mongoUtils.mockMongoose(
+        null,
+        mongooseConfigClean.mockServer.serverVersion
+      );
 
       connectionString = mongoServer.getUri();
     }
@@ -49,9 +52,12 @@ export async function initMongoose(mongooseConfig: IMongooseConfigs): Promise<mo
 
       // Updates Promise for mongoose, avoid warning log emit by mongoose
       (mongoose as any).Promise = global.Promise;
-      const mongoOptions: mongoose.ConnectionOptions = defaultsDeep(mongooseConfigClean.connectionOptions, {
-        promiseLibrary: global.Promise
-      });
+      const mongoOptions: mongoose.ConnectOptions = defaultsDeep(
+        mongooseConfigClean.connectionOptions,
+        {
+          promiseLibrary: global.Promise,
+        }
+      );
 
       // Creates the connection
       mongooseConnection = mongoose.createConnection(connectionString, mongoOptions);

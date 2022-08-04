@@ -97,7 +97,9 @@ export class MongoUpdater implements IMongoUpdater {
       // Installing the "appSchema" collection.
       // tslint:disable-next-line: prefer-template
       logger.info(' > Installing the "' + this.appSchemaCollectionName + '" collection.');
-      const collection: MongoDb.Collection = await this.mongoDb.createCollection(this.appSchemaCollectionName);
+      const collection: MongoDb.Collection = await this.mongoDb.createCollection(
+        this.appSchemaCollectionName
+      );
 
       // ==========================================
       // Makes sure only one appSchema document exists.
@@ -105,11 +107,11 @@ export class MongoUpdater implements IMongoUpdater {
       await collection.createIndexes([
         {
           key: {
-            name: 1
+            name: 1,
           },
           name: 'name_1',
-          unique: true
-        }
+          unique: true,
+        },
       ]);
 
       // ==========================================
@@ -119,7 +121,7 @@ export class MongoUpdater implements IMongoUpdater {
         name: 'singleton', // do not change!
         version: '0.0.0',
         lock: false,
-        lockTimestamp: 0
+        lockTimestamp: 0,
       } as ISchemeInfo);
     } catch (err) {
       // ==========================================
@@ -159,7 +161,9 @@ export class MongoUpdater implements IMongoUpdater {
 
     await appSchemaCollection.updateOne({}, { $set: { version: newVersion } });
     // tslint:disable-next-line: prefer-template
-    logger.info(' > MongoDB App Schema updagred from version ' + currentVersion + ' to version ' + newVersion);
+    logger.info(
+      ' > MongoDB App Schema updagred from version ' + currentVersion + ' to version ' + newVersion
+    );
   }
 
   public async getAppSchemaUpdateFiles(
@@ -176,13 +180,13 @@ export class MongoUpdater implements IMongoUpdater {
 
         try {
           filesClean = filesClean
-            .filter(name => {
+            .filter((name) => {
               return name.match(/\.js$/) !== null;
             })
-            .map(name => {
+            .map((name) => {
               return name.split('.js')[0];
             })
-            .filter(updateFileVersion => {
+            .filter((updateFileVersion) => {
               if (
                 semver.gt(updateFileVersion, currentAppSchemaVersion) &&
                 semver.lte(updateFileVersion, targetAppSchemaVersion)
@@ -200,7 +204,10 @@ export class MongoUpdater implements IMongoUpdater {
   }
 
   public async applyAppSchemaUpdates(currentVersion: string, newVersion: string): Promise<void> {
-    const updateFileNames: string[] = await this.getAppSchemaUpdateFiles(currentVersion, newVersion);
+    const updateFileNames: string[] = await this.getAppSchemaUpdateFiles(
+      currentVersion,
+      newVersion
+    );
     if (updateFileNames.length > 0) {
       for (const updateFileName of updateFileNames) {
         logger.info(' > Pending app schema update: ' + updateFileName);
@@ -216,7 +223,8 @@ export class MongoUpdater implements IMongoUpdater {
 
         if (!isFunction(updateFunction)) {
           return Promise.reject(
-            'The default export for an app schema update file must be a function! Was not for file : ' + updateFilePath
+            'The default export for an app schema update file must be a function! Was not for file : ' +
+              updateFilePath
           );
         }
 
@@ -259,8 +267,8 @@ export class MongoUpdater implements IMongoUpdater {
       {
         $set: {
           lock: true,
-          lockTimestamp: new Date().getTime()
-        }
+          lockTimestamp: new Date().getTime(),
+        },
       }
     );
 
@@ -269,8 +277,8 @@ export class MongoUpdater implements IMongoUpdater {
       return true;
     }
 
-    document = await appSchemaCollection.findOne({ lock: true });
-    if (document === null) {
+    const existingLock = await appSchemaCollection.findOne({ lock: true });
+    if (existingLock === null) {
       // try again!
       return this.lockAppSchemaDocument();
     }
@@ -278,7 +286,7 @@ export class MongoUpdater implements IMongoUpdater {
     // ==========================================
     // Checks the existing lock's timestamp
     // ==========================================
-    const lockTimestamp = (document as any).lockTimestamp;
+    const lockTimestamp = (existingLock as any).lockTimestamp;
     const nowTimestamp = new Date().getTime();
     const lockAgeMilliSeconds = nowTimestamp - lockTimestamp;
 
@@ -291,8 +299,8 @@ export class MongoUpdater implements IMongoUpdater {
         {
           $set: {
             lock: true,
-            lockTimestamp: new Date().getTime()
-          }
+            lockTimestamp: new Date().getTime(),
+          },
         }
       );
 
@@ -321,8 +329,8 @@ export class MongoUpdater implements IMongoUpdater {
       {
         $set: {
           lock: false,
-          lockTimestamp: 0
-        }
+          lockTimestamp: 0,
+        },
       }
     );
 
@@ -339,13 +347,19 @@ export class MongoUpdater implements IMongoUpdater {
     logger.info(
       `Validating that the "${this.appSchemaCollectionName}" collection required by the application has been installed.`
     );
-    const collections: any[] = await this.mongoDb.listCollections({ name: this.appSchemaCollectionName }).toArray();
+    const collections: any[] = await this.mongoDb
+      .listCollections({ name: this.appSchemaCollectionName })
+      .toArray();
 
     if (collections.length === 0) {
-      logger.info(` > The "${this.appSchemaCollectionName}" collection was not found... Starting a new installation.`);
+      logger.info(
+        ` > The "${this.appSchemaCollectionName}" collection was not found... Starting a new installation.`
+      );
       await this.installAppSchemaCollection();
     } else {
-      logger.info(` > The "${this.appSchemaCollectionName}" collection was found. No installation required.`);
+      logger.info(
+        ` > The "${this.appSchemaCollectionName}" collection was found. No installation required.`
+      );
     }
   }
 
@@ -363,7 +377,9 @@ export class MongoUpdater implements IMongoUpdater {
         const currentAppSchemaVersion: string = await this.getAppSchemaVersion();
         if (semver.gte(currentAppSchemaVersion, targetVersion)) {
           // tslint:disable-next-line: prefer-template
-          logger.info(' > Current database app schema is up to date : ' + currentAppSchemaVersion + ').');
+          logger.info(
+            ' > Current database app schema is up to date : ' + currentAppSchemaVersion + ').'
+          );
           return;
         }
 
@@ -409,7 +425,7 @@ export class MongoUpdater implements IMongoUpdater {
   protected findMongoAppSchemaTargetVersion(): string {
     let targetVersion = '0.0.0';
 
-    fs.readdirSync(this.getAppSchemaFilesDirPath()).forEach(fileName => {
+    fs.readdirSync(this.getAppSchemaFilesDirPath()).forEach((fileName) => {
       if (fileName.endsWith('.js')) {
         const version = fileName.split('.js')[0];
         if (semver.gt(version, targetVersion)) {

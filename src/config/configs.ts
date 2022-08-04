@@ -24,4 +24,4 @@ export class Configs {
   }
 }
 
-export let configs: Configs = new Configs();
+export const configs: Configs = new Configs();

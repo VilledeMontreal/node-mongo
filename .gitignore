@@ -2,7 +2,6 @@ node_modules
 /log
 /temp
 .idea
-.eslintrc.json
 /*.log
 /test-*
 /src/test.ts
