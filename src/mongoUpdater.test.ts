@@ -26,7 +26,7 @@ describe('Mongo Updater', () => {
   // "this" value for "MongoUtils.mockMongoose(...)"
   const testconfig: IMongooseConfigs = mongodbConstants.testsConfig;
 
-  before(async function() {
+  before(async function () {
     // Makes sure Mongoose is mocked, but not in Jenkins as we will start a dedicated mongodb container.
     await mongoUtils.mockMongoose(this, testconfig.mockServer.serverVersion);
     const connection = await initMongoose(testconfig);
@@ -50,14 +50,14 @@ describe('Mongo Updater', () => {
     await mongoDb.dropDatabase();
   });
 
-  describe('getSchemaVersion', async () => {
+  describe('getSchemaVersion', () => {
     it('should contain schema version 0.0.0', async () => {
       const version: string = await mongoUpdater.getAppSchemaVersion();
       assert.strictEqual(version, '0.0.0');
     });
   });
 
-  describe('checkInstall', async () => {
+  describe('checkInstall', () => {
     let installAppSchemaCollectionSpy: sinon.SinonSpy;
 
     beforeEach(async () => {
@@ -100,22 +100,26 @@ describe('Mongo Updater', () => {
       assert.strictEqual(collections.length, 1);
       assert.strictEqual(collections[0].name, testconfig.updater.appSchemaCollectionName);
 
-      const schema: MongoDb.Collection = mongoDb.collection(testconfig.updater.appSchemaCollectionName);
+      const schema: MongoDb.Collection = mongoDb.collection(
+        testconfig.updater.appSchemaCollectionName
+      );
       const schemaDb: any[] = await schema.find().toArray();
       assert.strictEqual(schemaDb[0].version, '0.0.0');
     });
   });
 
-  describe('getSchemaVersion', async () => {
+  describe('getSchemaVersion', () => {
     it('should contain schema version 0.0.0', async () => {
       const version: string = await mongoUpdater.getAppSchemaVersion();
       assert.strictEqual(version, '0.0.0');
     });
   });
 
-  describe('lock', async () => {
+  describe('lock', () => {
     it('lock should be equal to false', async () => {
-      const schema: MongoDb.Collection = mongoDb.collection(testconfig.updater.appSchemaCollectionName);
+      const schema: MongoDb.Collection = mongoDb.collection(
+        testconfig.updater.appSchemaCollectionName
+      );
       const schemaDb: any[] = await schema.find().toArray();
       assert.strictEqual(schemaDb[0].lock, false);
     });
@@ -126,7 +130,9 @@ describe('Mongo Updater', () => {
     });
 
     it('lock should be equal to true', async () => {
-      const schema: MongoDb.Collection = mongoDb.collection(testconfig.updater.appSchemaCollectionName);
+      const schema: MongoDb.Collection = mongoDb.collection(
+        testconfig.updater.appSchemaCollectionName
+      );
       const schemaDb: any[] = await schema.find().toArray();
       assert.strictEqual(schemaDb[0].lock, true);
     });
@@ -137,9 +143,11 @@ describe('Mongo Updater', () => {
     });
   });
 
-  describe('unlock', async () => {
+  describe('unlock', () => {
     it('lock should be equal to true', async () => {
-      const schema: MongoDb.Collection = mongoDb.collection(testconfig.updater.appSchemaCollectionName);
+      const schema: MongoDb.Collection = mongoDb.collection(
+        testconfig.updater.appSchemaCollectionName
+      );
       const schemaDb: any[] = await schema.find().toArray();
       assert.strictEqual(schemaDb[0].lock, true);
     });
@@ -150,7 +158,9 @@ describe('Mongo Updater', () => {
     });
 
     it('lock should be equal to false', async () => {
-      const schema: MongoDb.Collection = mongoDb.collection(testconfig.updater.appSchemaCollectionName);
+      const schema: MongoDb.Collection = mongoDb.collection(
+        testconfig.updater.appSchemaCollectionName
+      );
       const schemaDb: any[] = await schema.find().toArray();
       assert.strictEqual(schemaDb[0].lock, false);
     });
@@ -159,13 +169,15 @@ describe('Mongo Updater', () => {
       const isUnlocked: boolean = await mongoUpdater.unlockAppSchemaDocument();
       assert.strictEqual(isUnlocked, false);
 
-      const schema: MongoDb.Collection = mongoDb.collection(testconfig.updater.appSchemaCollectionName);
+      const schema: MongoDb.Collection = mongoDb.collection(
+        testconfig.updater.appSchemaCollectionName
+      );
       const schemaDb: any[] = await schema.find().toArray();
       assert.strictEqual(schemaDb[0].lock, false);
     });
   });
 
-  describe('updateSchemaVersion', async () => {
+  describe('updateSchemaVersion', () => {
     it('should contain schema version 0.0.0', async () => {
       const version: string = await mongoUpdater.getAppSchemaVersion();
       assert.strictEqual(version, '0.0.0');
@@ -186,7 +198,7 @@ describe('Mongo Updater', () => {
     });
   });
 
-  describe('checkUpdate', async () => {
+  describe('checkUpdate', () => {
     let lockSpy: sinon.SinonSpy;
     let applyUpdateSchemasSpy: sinon.SinonSpy;
     let updateSchemaVersionSpy: sinon.SinonSpy;
@@ -222,7 +234,7 @@ describe('Mongo Updater', () => {
     // A regular function is *required* to get the proper
     // "this" value to call ".timeout(...)"
     // ==========================================
-    it('should wait when is already locked and should delete a lock that is too old', async function() {
+    it('should wait when is already locked and should delete a lock that is too old', async function () {
       this.timeout(5000);
 
       // Resets version to 0.0.0
@@ -250,7 +262,7 @@ describe('Mongo Updater', () => {
     });
   });
 
-  describe('getUpdateFiles', async () => {
+  describe('getUpdateFiles', () => {
     it('should not contain files for version between 0.0.0 and 0.0.0', async () => {
       const files: string[] = await mongoUpdater.getAppSchemaUpdateFiles('0.0.0', '0.0.0');
       assert.strictEqual(files.length, 0);
@@ -269,7 +281,7 @@ describe('Mongo Updater', () => {
     });
   });
 
-  describe('applyUpdateSchemas', async () => {
+  describe('applyUpdateSchemas', () => {
     let getUpdateFilesSpy: sinon.SinonSpy;
     beforeEach(async () => {
       getUpdateFilesSpy = sinon.spy(mongoUpdater, 'getAppSchemaUpdateFiles');

@@ -1,7 +1,7 @@
 import { ILogger } from '@villedemontreal/logger';
 import { configs } from './configs';
 
-let libIsInitialized: boolean = false;
+let libIsInitialized = false;
 /**
  * Inits the library.
  */

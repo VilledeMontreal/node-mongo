@@ -2,7 +2,6 @@ node_modules
 /log
 /temp
 .idea
-.eslintrc.json
 /*.log
 /test-*
 /src/test.ts
@@ -13,4 +12,5 @@ yarn.lock
 *.map
 *.d.ts
 *.js
-!/prettier.config.js
+!/.prettierrc.js
+!/.eslintrc.js

@@ -17,10 +17,10 @@ export default async function update(db: MongoDb.Db): Promise<void> {
   await testCollection.createIndexes([
     {
       key: {
-        email: 1
+        email: 1,
       },
       name: 'email_1',
-      unique: true
-    }
+      unique: true,
+    },
   ]);
 }

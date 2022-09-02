@@ -1,6 +1,10 @@
 import { IPaginateOptions } from './specs/IPaginateOptions';
 
-function paginate(q: any, options: IPaginateOptions, callback: (error: Error, result: any) => void) {
+function paginate(
+  q: any,
+  options: IPaginateOptions,
+  callback: (error: Error, result: any) => void
+) {
   const optionsClean = PaginateBuilder.getOptions((paginate as any).options, options);
 
   const query = q || {};
@@ -22,14 +26,18 @@ export class PaginateBuilder {
     lean: false,
     leanWithId: true,
     limit: 10,
-    offset: 0
+    offset: 0,
   });
 
   public static getOptions(...options: IPaginateOptions[]): IPaginateOptions {
     return Object.assign({}, PaginateBuilder.defaultOptions, ...options);
   }
 
-  public static executeQueries(model: any, query: any, options: IPaginateOptions): [Promise<any[]>, Promise<number>] {
+  public static executeQueries(
+    model: any,
+    query: any,
+    options: IPaginateOptions
+  ): [Promise<any[]>, Promise<number>] {
     const { select, sort, populate, lean, leanWithId, limit, offset } = options;
     let itemsQuery: any;
 
@@ -38,20 +46,17 @@ export class PaginateBuilder {
     }
 
     if (limit > 0) {
-      itemsQuery = model
-        .find(query)
-        .select(select)
-        .sort(sort)
-        .skip(offset)
-        .limit(limit)
-        .lean(lean);
+      itemsQuery = model.find(query).select(select).sort(sort).skip(offset).limit(limit).lean(lean);
 
       if (populate) {
-        [].concat(populate).forEach(item => itemsQuery.populate(item));
+        [].concat(populate).forEach((item) => itemsQuery.populate(item));
       }
     }
 
-    return [itemsQuery && limit > 0 ? itemsQuery.exec() : Promise.resolve([]), model.countDocuments(query).exec()];
+    return [
+      itemsQuery && limit > 0 ? itemsQuery.exec() : Promise.resolve([]),
+      model.countDocuments(query).exec(),
+    ];
   }
 
   public static processResult(
@@ -62,7 +67,7 @@ export class PaginateBuilder {
     const { lean, leanWithId, limit, offset } = options;
     return new Promise((resolve, reject) => {
       Promise.all(promises).then(
-        data => {
+        (data) => {
           const items = data[0] as any[];
           const count = data[1] as number;
           const result: any = { paging: { limit, offset, totalCount: count } };
@@ -84,7 +89,7 @@ export class PaginateBuilder {
 
           resolve(result);
         },
-        error => {
+        (error) => {
           if (typeof callback === 'function') {
             return callback(error, null);
           }

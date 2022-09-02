@@ -9,7 +9,7 @@ import {
   createServerError,
   globalConstants,
   IApiError,
-  utils
+  utils,
 } from '@villedemontreal/general-utils';
 import { LogLevel } from '@villedemontreal/logger';
 import * as fs from 'fs-extra';
@@ -25,7 +25,7 @@ import { constants } from './config/constants';
  */
 export class MongoUtils {
   private mongoMemServer: MongoMemoryServer | MongoMemoryReplSet;
-  private useReplSet: boolean = false;
+  private useReplSet = false;
 
   private mockgosseMockedFlag = 'mocked';
 
@@ -54,7 +54,7 @@ export class MongoUtils {
   public async mockMongoose(
     mochaInstance: mocha.Context,
     mongoServerVersion: string,
-    useReplSet: boolean = false
+    useReplSet = false
   ): Promise<MongoMemoryServer | MongoMemoryReplSet> {
     // ==========================================
     // We only mock the database if it's
@@ -106,20 +106,20 @@ export class MongoUtils {
       // Voir https://www.npmjs.com/package/mongodb-memory-server pour les options
       const memoryServerOption: any = {
         instance: {
-          dbPath: dataPath // by default create in temp directory,
+          dbPath: dataPath, // by default create in temp directory,
         },
 
         binary: {
           version: mongoServerVersion ? mongoServerVersion : 'latest', // by default 'latest'
-          downloadDir: downloadDirPath // by default node_modules/.cache/mongodb-memory-server/mongodb-binaries
+          downloadDir: downloadDirPath, // by default node_modules/.cache/mongodb-memory-server/mongodb-binaries
         },
-        debug: false
+        debug: false,
       };
 
       if (useReplSet) {
         const replSetOptions: any = {
           ...memoryServerOption,
-          replSet: { count: 3 }
+          replSet: { count: 3 },
         };
         this.mongoMemServer = await MongoMemoryReplSet.create(replSetOptions);
       } else {
@@ -175,7 +175,7 @@ export class MongoUtils {
       return true;
     }
 
-    Object.keys(obj.errors).forEach(errorKey => {
+    Object.keys(obj.errors).forEach((errorKey) => {
       const errorObject = obj.errors[errorKey];
 
       if (!('kind' in errorObject) || !('path' in errorObject) || !('message' in errorObject)) {
@@ -217,7 +217,10 @@ export class MongoUtils {
    * @param publicMessage a public message to be used in the
    * generated error. Fopr example : "The user is invalid".
    */
-  public convertMongoOrMongooseErrorToApiError(err: any, publicMessage: string): ApiErrorAndInfo | any {
+  public convertMongoOrMongooseErrorToApiError(
+    err: any,
+    publicMessage: string
+  ): ApiErrorAndInfo | any {
     if (!err) {
       return createServerError('Empty error object');
     }
@@ -234,7 +237,10 @@ export class MongoUtils {
       // code.
       // ==========================================
       if (errClean.code === constants.mongo.mongoErrorCodes.DUPLICATE_KEY) {
-        return createError(globalConstants.errors.apiGeneralErrors.codes.DUPLICATE_KEY, publicMessage)
+        return createError(
+          globalConstants.errors.apiGeneralErrors.codes.DUPLICATE_KEY,
+          publicMessage
+        )
           .httpStatus(HttpStatusCodes.CONFLICT)
           .publicMessage(publicMessage)
           .logLevel(LogLevel.INFO)
@@ -263,7 +269,7 @@ export class MongoUtils {
         } else {
           const error = errClean;
           errClean = {
-            errors: [error]
+            errors: [error],
           };
         }
       }
@@ -271,13 +277,13 @@ export class MongoUtils {
       let errorDetails: IApiError[];
       if (errClean.errors && !_.isEmpty(errClean.errors)) {
         errorDetails = [];
-        Object.keys(errClean.errors).forEach(errorKey => {
+        Object.keys(errClean.errors).forEach((errorKey) => {
           const errorMessage = errClean.errors[errorKey];
 
           const errorDetail: IApiError = {
             code: errorMessage.kind,
             target: errorMessage.path,
-            message: errorMessage.message
+            message: errorMessage.message,
           };
           errorDetails.push(errorDetail);
         });
@@ -319,4 +325,4 @@ export class MongoUtils {
     return pojo;
   }
 }
-export let mongoUtils: MongoUtils = new MongoUtils();
+export const mongoUtils: MongoUtils = new MongoUtils();
