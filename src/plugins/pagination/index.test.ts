@@ -46,7 +46,7 @@ describe('plugin pagination', () => {
     return authorModel.create({ name: 'Arthur Conan Doyle' }).then((author) => {
       for (let i = 1; i <= 100; i++) {
         book = new bookModel({
-          title: 'Book #' + i,
+          title: `Book #${i}`,
           date: new Date(date.getTime() + i),
           author: author._id,
         });

@@ -1,14 +1,23 @@
 {
   "compilerOptions": {
-    "target": "es2017",
+    "target": "es2020",
     "module": "commonjs",
     "sourceMap": true,
     "pretty": true,
     "experimentalDecorators": true,
     "skipLibCheck": true,
+    "newLine": "LF",
+    "charset": "utf8",
+    "suppressImplicitAnyIndexErrors": true,
+    "alwaysStrict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": true,
+    "noUnusedLocals": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
     "declaration": true,
     "outDir": "dist",
     "rootDir": "."
   },
-  "include": ["src", "tests"]
+  "exclude": ["dist", "temp", "node_modules", "output", "log", "test-data", "generated", ".*"]
 }

@@ -50,14 +50,14 @@ describe('Mongo Updater', () => {
     await mongoDb.dropDatabase();
   });
 
-  describe('getSchemaVersion', async () => {
+  describe('getSchemaVersion', () => {
     it('should contain schema version 0.0.0', async () => {
       const version: string = await mongoUpdater.getAppSchemaVersion();
       assert.strictEqual(version, '0.0.0');
     });
   });
 
-  describe('checkInstall', async () => {
+  describe('checkInstall', () => {
     let installAppSchemaCollectionSpy: sinon.SinonSpy;
 
     beforeEach(async () => {
@@ -108,14 +108,14 @@ describe('Mongo Updater', () => {
     });
   });
 
-  describe('getSchemaVersion', async () => {
+  describe('getSchemaVersion', () => {
     it('should contain schema version 0.0.0', async () => {
       const version: string = await mongoUpdater.getAppSchemaVersion();
       assert.strictEqual(version, '0.0.0');
     });
   });
 
-  describe('lock', async () => {
+  describe('lock', () => {
     it('lock should be equal to false', async () => {
       const schema: MongoDb.Collection = mongoDb.collection(
         testconfig.updater.appSchemaCollectionName
@@ -143,7 +143,7 @@ describe('Mongo Updater', () => {
     });
   });
 
-  describe('unlock', async () => {
+  describe('unlock', () => {
     it('lock should be equal to true', async () => {
       const schema: MongoDb.Collection = mongoDb.collection(
         testconfig.updater.appSchemaCollectionName
@@ -177,7 +177,7 @@ describe('Mongo Updater', () => {
     });
   });
 
-  describe('updateSchemaVersion', async () => {
+  describe('updateSchemaVersion', () => {
     it('should contain schema version 0.0.0', async () => {
       const version: string = await mongoUpdater.getAppSchemaVersion();
       assert.strictEqual(version, '0.0.0');
@@ -198,7 +198,7 @@ describe('Mongo Updater', () => {
     });
   });
 
-  describe('checkUpdate', async () => {
+  describe('checkUpdate', () => {
     let lockSpy: sinon.SinonSpy;
     let applyUpdateSchemasSpy: sinon.SinonSpy;
     let updateSchemaVersionSpy: sinon.SinonSpy;
@@ -262,7 +262,7 @@ describe('Mongo Updater', () => {
     });
   });
 
-  describe('getUpdateFiles', async () => {
+  describe('getUpdateFiles', () => {
     it('should not contain files for version between 0.0.0 and 0.0.0', async () => {
       const files: string[] = await mongoUpdater.getAppSchemaUpdateFiles('0.0.0', '0.0.0');
       assert.strictEqual(files.length, 0);
@@ -281,7 +281,7 @@ describe('Mongo Updater', () => {
     });
   });
 
-  describe('applyUpdateSchemas', async () => {
+  describe('applyUpdateSchemas', () => {
     let getUpdateFilesSpy: sinon.SinonSpy;
     beforeEach(async () => {
       getUpdateFilesSpy = sinon.spy(mongoUpdater, 'getAppSchemaUpdateFiles');

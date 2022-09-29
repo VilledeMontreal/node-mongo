@@ -1,10 +1,19 @@
 import { ILogger } from '@villedemontreal/logger';
+import * as os from 'os';
+import * as path from 'path';
 
 /**
  * Lib configs
  */
 export class Configs {
+  public isWindows: boolean;
+  public libRoot: string;
   private _loggerCreator: (name: string) => ILogger;
+
+  constructor() {
+    this.libRoot = path.normalize(__dirname + '/../../..');
+    this.isWindows = os.platform() === 'win32';
+  }
 
   /**
    * The Logger creator

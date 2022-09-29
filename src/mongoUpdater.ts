@@ -235,7 +235,7 @@ export class MongoUpdater implements IMongoUpdater {
   }
 
   public async getAppSchemaCollection(): Promise<MongoDb.Collection> {
-    return await this.mongoDb.collection(this.appSchemaCollectionName);
+    return this.mongoDb.collection(this.appSchemaCollectionName);
   }
 
   public async getAppSchemaVersion(): Promise<string> {
@@ -367,26 +367,20 @@ export class MongoUpdater implements IMongoUpdater {
     logger.info('Checking for db app schema updates:');
 
     let lockAcquired = false;
+    let currentAppSchemaVersion: string | undefined;
     const targetVersion: string = this.findMongoAppSchemaTargetVersion();
     try {
-      while (true) {
+      while (!lockAcquired) {
         // ==========================================
         // Checks if the appSchema version has to be
         // updated.
         // ==========================================
-        const currentAppSchemaVersion: string = await this.getAppSchemaVersion();
+        currentAppSchemaVersion = await this.getAppSchemaVersion();
         if (semver.gte(currentAppSchemaVersion, targetVersion)) {
           // tslint:disable-next-line: prefer-template
           logger.info(
             ' > Current database app schema is up to date : ' + currentAppSchemaVersion + ').'
           );
-          return;
-        }
-
-        if (lockAcquired) {
-          logger.info(` > Applying some required updates...`);
-          await this.applyAppSchemaUpdates(currentAppSchemaVersion, targetVersion);
-          await this.updateAppSchemaVersion(currentAppSchemaVersion, targetVersion);
           return;
         }
 
@@ -407,6 +401,11 @@ export class MongoUpdater implements IMongoUpdater {
         } else {
           logger.info(` > Lock acquired.`);
         }
+      }
+      if (lockAcquired && currentAppSchemaVersion) {
+        logger.info(` > Applying some required updates...`);
+        await this.applyAppSchemaUpdates(currentAppSchemaVersion, targetVersion);
+        await this.updateAppSchemaVersion(currentAppSchemaVersion, targetVersion);
       }
     } finally {
       if (lockAcquired) {

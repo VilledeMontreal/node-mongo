@@ -10,6 +10,81 @@ const logger = createLogger('mongoClient');
 
 let mongooseConnection: mongoose.Connection;
 
+async function doInitMongoose(
+  mongooseConfigClean: MongooseConfigs,
+  resolve: (value: mongoose.Connection) => void,
+  reject: (reason?: any) => void
+): Promise<void> {
+  let connectionString = mongooseConfigClean.connectionString;
+
+  // ==========================================
+  // Mocked Mongo server?
+  // ==========================================
+  if (connectionString === constants.mongo.testing.MOCK_CONNECTION_STRING) {
+    // ==========================================
+    // Mock!
+    // ==========================================
+    const mongoServer = await mongoUtils.mockMongoose(
+      null,
+      mongooseConfigClean.mockServer.serverVersion
+    );
+
+    connectionString = mongoServer.getUri();
+  }
+
+  if (mongooseConnection) {
+    await mongooseConnection.close();
+    mongooseConnection = undefined;
+  }
+
+  // Updates Promise for mongoose, avoid warning log emit by mongoose
+  (mongoose as any).Promise = global.Promise;
+  const mongoOptions: mongoose.ConnectOptions = defaultsDeep(
+    mongooseConfigClean.connectionOptions,
+    {
+      promiseLibrary: global.Promise,
+    }
+  );
+
+  // Creates the connection
+  mongooseConnection = mongoose.createConnection(connectionString, mongoOptions);
+
+  // Triggered if an error occured
+  mongooseConnection.on('error', (err: any) => {
+    mongooseConnection = null;
+    reject(`Mongo Database: Error connecting to Mongo: ${err}`);
+  });
+
+  // Triggered when the connection is made.
+  mongooseConnection.on('connected', () => {
+    (async () => {
+      // Check for schema updates once the connexion is made
+      if (mongooseConfigClean.applyUpdates) {
+        try {
+          await checkForUpdates(mongooseConfigClean);
+        } catch (err) {
+          try {
+            await mongooseConnection.close();
+            mongooseConnection = undefined;
+          } catch (err) {
+            logger.warning(`Error closing connection to Mongo : ${err}`);
+          }
+
+          reject(`Error updating Mongo: ${err}`);
+          return;
+        }
+      } else {
+        logger.info(`Mongo updates skipped`);
+      }
+
+      // All good!
+      resolve(mongooseConnection);
+    })().catch((err) => {
+      reject(err);
+    });
+  });
+}
+
 /**
  * This is the entry point to use this library to manage your
  * Mongoose connections.
@@ -26,74 +101,10 @@ export async function initMongoose(mongooseConfig: IMongooseConfigs): Promise<mo
   // ==========================================
   const mongooseConfigClean = new MongooseConfigs(mongooseConfig);
 
-  return new Promise<mongoose.Connection>(async (resolve, reject) => {
-    let connectionString = mongooseConfigClean.connectionString;
-
-    // ==========================================
-    // Mocked Mongo server?
-    // ==========================================
-    if (connectionString === constants.mongo.testing.MOCK_CONNECTION_STRING) {
-      // ==========================================
-      // Mock!
-      // ==========================================
-      const mongoServer = await mongoUtils.mockMongoose(
-        null,
-        mongooseConfigClean.mockServer.serverVersion
-      );
-
-      connectionString = mongoServer.getUri();
-    }
-
-    try {
-      if (mongooseConnection) {
-        await mongooseConnection.close();
-        mongooseConnection = undefined;
-      }
-
-      // Updates Promise for mongoose, avoid warning log emit by mongoose
-      (mongoose as any).Promise = global.Promise;
-      const mongoOptions: mongoose.ConnectOptions = defaultsDeep(
-        mongooseConfigClean.connectionOptions,
-        {
-          promiseLibrary: global.Promise,
-        }
-      );
-
-      // Creates the connection
-      mongooseConnection = mongoose.createConnection(connectionString, mongoOptions);
-
-      // Triggered if an error occured
-      mongooseConnection.on('error', (err: any) => {
-        mongooseConnection = null;
-        reject('Mongo Database: Error connecting to Mongo: ' + err);
-      });
-
-      // Triggered when the connection is made.
-      mongooseConnection.on('connected', async () => {
-        // Check for schema updates once the connexion is made
-        if (mongooseConfigClean.applyUpdates) {
-          try {
-            await checkForUpdates(mongooseConfigClean);
-          } catch (err) {
-            try {
-              await mongooseConnection.close();
-              mongooseConnection = undefined;
-            } catch (err) {
-              logger.warning(`Error closing connection to Mongo : ${err}`);
-            }
-
-            return reject('Error updating Mongo: ' + err);
-          }
-        } else {
-          logger.info(`Mongo updates skipped`);
-        }
-
-        // All good!
-        resolve(mongooseConnection);
-      });
-    } catch (err) {
-      return reject('Error initializing Mongo: ' + err);
-    }
+  return new Promise<mongoose.Connection>((resolve, reject) => {
+    doInitMongoose(mongooseConfigClean, resolve, reject).catch((err) => {
+      reject(`Error initializing Mongo: ${err}`);
+    });
   });
 }
 
@@ -102,7 +113,7 @@ export async function initMongoose(mongooseConfig: IMongooseConfigs): Promise<mo
  * to run the application on the target Mongo database.
  */
 async function checkForUpdates(mongooseConfig: IMongooseConfigs): Promise<void> {
-  const connection = await getMongooseConnection();
+  const connection = getMongooseConnection();
   const updater: IMongoUpdater = new MongoUpdater(
     connection.db,
     mongooseConfig.updater.mongoSchemaUpdatesDirPath,

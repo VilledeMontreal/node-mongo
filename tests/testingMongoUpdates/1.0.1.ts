@@ -7,7 +7,7 @@ export default async function update(db: MongoDb.Db): Promise<void> {
   // ==========================================
   // Adding extra indexes on the "test" collection.
   // ==========================================
-  const testUserCollection: MongoDb.Collection = await db.collection('test');
+  const testUserCollection: MongoDb.Collection = db.collection('test');
 
   await testUserCollection.createIndexes([
     {
