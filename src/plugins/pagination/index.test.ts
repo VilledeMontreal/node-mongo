@@ -35,7 +35,7 @@ describe('plugin pagination', () => {
       constants.testsConfig.mockServer.serverVersion
     );
     const connString = mockedDb.getUri();
-    await mongoose.connect(connString, { useNewUrlParser: true });
+    await mongoose.connect(connString);
   });
 
   before(async function () {

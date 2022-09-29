@@ -39,7 +39,7 @@ async function doInitMongoose(
 
   // Updates Promise for mongoose, avoid warning log emit by mongoose
   (mongoose as any).Promise = global.Promise;
-  const mongoOptions: mongoose.ConnectionOptions = defaultsDeep(
+  const mongoOptions: mongoose.ConnectOptions = defaultsDeep(
     mongooseConfigClean.connectionOptions,
     {
       promiseLibrary: global.Promise,

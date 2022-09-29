@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.0.0-beta]
+
+### Changed
+
+- **breaking changes** The version of the Mongoose dependency changed from 5.13.x to 6.5.x. You can look at the [5 to 6 migration guide](https://mongoosejs.com/docs/migrating_to_6.html#mongodb-driver-40) for more information on this change.
+- **breaking changes** The version of the MongoDb driver dependency changed from 3.6.12 to 4.8.1. You can look at the [MongoDb Node Driver 4.0 Migration guide](https://github.com/mongodb/node-mongodb-native/blob/4.0/docs/CHANGES_4.0.0.md) for more information about this change.
+
+- **breaking changes** The version of Typescript has changed from 3.9.5 to 4.7.4
+
+- Tslint was replaced by Eslint
+
+
 ## [6.4.0] - 2021-07-20
 
 ### Added

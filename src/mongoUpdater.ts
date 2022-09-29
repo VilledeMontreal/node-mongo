@@ -277,8 +277,8 @@ export class MongoUpdater implements IMongoUpdater {
       return true;
     }
 
-    document = await appSchemaCollection.findOne({ lock: true });
-    if (document === null) {
+    const existingLock = await appSchemaCollection.findOne({ lock: true });
+    if (existingLock === null) {
       // try again!
       return this.lockAppSchemaDocument();
     }
@@ -286,7 +286,7 @@ export class MongoUpdater implements IMongoUpdater {
     // ==========================================
     // Checks the existing lock's timestamp
     // ==========================================
-    const lockTimestamp = (document as any).lockTimestamp;
+    const lockTimestamp = (existingLock as any).lockTimestamp;
     const nowTimestamp = new Date().getTime();
     const lockAgeMilliSeconds = nowTimestamp - lockTimestamp;
 

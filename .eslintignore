@@ -12,6 +12,7 @@
 Jenkinsfile
 package.json
 package-lock.json
+tsconfig.json
 yarn.lock
 README.md
 license
@@ -21,3 +22,6 @@ license
 *.hbs
 *.txt
 *.js
+*.md
+
+!/src/run.js
