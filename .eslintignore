@@ -23,5 +23,3 @@ license
 *.txt
 *.js
 *.md
-
-!/src/run.js

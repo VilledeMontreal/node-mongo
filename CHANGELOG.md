@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.0.2]
+
+- Change Mongo mock server to use version 5.0.8 by default in order to test the new 5.x release
+- move scripting lib to devDependencies
+- use scripting lib
+- remove tslint and prettier
+- add nyc for code coverage
+- restore eslint constraints that had been disabled
+- remove promiseLibrary config option since it is marked as deprecated by Mongo
+- upgrade mongodb, mongoose and mongodb-memory-server-core
+
 ## [7.0.0-beta]
 
 ### Changed
@@ -15,7 +26,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **breaking changes** The version of Typescript has changed from 3.9.5 to 4.7.4
 
 - Tslint was replaced by Eslint
-
 
 ## [6.4.0] - 2021-07-20
 

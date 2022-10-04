@@ -19,4 +19,3 @@ license
 *.hbs
 *.txt
 *.js
-!/src/run.js

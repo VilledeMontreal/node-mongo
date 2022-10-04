@@ -1,6 +1,6 @@
 {
   "name": "@villedemontreal/mongo",
-  "version": "7.0.1",
+  "version": "7.0.2",
   "description": "Utilities for Mongo / Mongoose",
   "main": "dist/src/index.js",
   "typings": "dist/src",
@@ -10,12 +10,10 @@
   ],
   "scripts": {
     "start": "node run test",
-    "test": "npm run compile && mocha --require ts-node/register --exit ./**/*.test.ts",
+    "test": "node run test",
     "compile": "node run compile",
-    "lint": "npx eslint .",
-    "lint-fix": "npx eslint --fix .",
-    "prettier": "node run prettier",
-    "prettier-fix": "node run prettier-fix",
+    "lint": "node run lint",
+    "lint-fix": "node run lint-fix",
     "watch": "node run watch"
   },
   "repository": {
@@ -32,37 +30,35 @@
   "license": "MIT",
   "dependencies": {
     "@types/http-status-codes": "1.2.0",
-    "@types/lodash": "4.14.184",
+    "@types/lodash": "4.14.186",
     "@types/semver": "7.3.12",
     "@villedemontreal/general-utils": "5.16.7",
     "@villedemontreal/logger": "6.5.7",
-    "@villedemontreal/scripting": "2.1.6",
     "app-root-path": "3.1.0",
     "fs-extra": "10.1.0",
     "http-status-codes": "2.2.0",
     "lodash": "4.17.21",
-    "mongodb": "4.8.1",
-    "mongodb-memory-server-core": "8.8.0",
-    "mongoose": "6.5.0",
-    "semver": "7.3.5",
-    "ts-node": "^10.9.1"
+    "mongodb": "4.9.1",
+    "mongodb-memory-server-core": "8.9.3",
+    "mongoose": "6.6.4",
+    "semver": "7.3.7"
   },
   "devDependencies": {
     "@types/chai": "4.3.3",
     "@types/fs-extra": "9.0.13",
     "@types/mocha": "9.1.1",
     "@types/sinon": "10.0.13",
-    "@typescript-eslint/eslint-plugin": "5.36.1",
-    "@typescript-eslint/parser": "5.36.1",
+    "@typescript-eslint/eslint-plugin": "5.39.0",
+    "@typescript-eslint/parser": "5.39.0",
+    "@villedemontreal/scripting": "2.1.6",
     "chai": "4.3.6",
-    "eslint": "8.23.0",
+    "eslint": "8.24.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-prettier": "4.2.1",
     "mocha": "9.2.2",
-    "mocha-jenkins-reporter": "0.4.7",
-    "prettier": "2.7.1",
-    "sinon": "14.0.0",
-    "typescript": "4.8.2"
-
+    "mocha-jenkins-reporter": "0.4.8",
+    "nyc": "15.1.0",
+    "sinon": "14.0.1",
+    "typescript": "4.8.4"
   }
 }
