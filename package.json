@@ -1,6 +1,6 @@
 {
   "name": "@villedemontreal/mongo",
-  "version": "7.0.4",
+  "version": "7.0.5",
   "description": "Utilities for Mongo / Mongoose",
   "main": "dist/src/index.js",
   "typings": "dist/src",
@@ -60,5 +60,8 @@
     "nyc": "15.1.0",
     "sinon": "14.0.1",
     "typescript": "4.8.4"
+  },
+  "override": {
+    "mongodb": "$mongodb"
   }
 }
