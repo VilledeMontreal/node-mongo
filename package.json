@@ -1,6 +1,6 @@
 {
   "name": "@villedemontreal/mongo",
-  "version": "7.0.5",
+  "version": "7.0.6",
   "description": "Utilities for Mongo / Mongoose",
   "main": "dist/src/index.js",
   "typings": "dist/src",
