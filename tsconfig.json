@@ -7,7 +7,6 @@
     "experimentalDecorators": true,
     "skipLibCheck": true,
     "newLine": "LF",
-    "charset": "utf8",
     "suppressImplicitAnyIndexErrors": true,
     "alwaysStrict": true,
     "forceConsistentCasingInFileNames": true,
@@ -17,7 +16,8 @@
     "noFallthroughCasesInSwitch": true,
     "declaration": true,
     "outDir": "dist",
-    "rootDir": "."
+    "rootDir": ".",
+    "ignoreDeprecations": "5.0"
   },
   "exclude": ["dist", "temp", "node_modules", "output", "log", "test-data", "generated", ".*"]
 }
