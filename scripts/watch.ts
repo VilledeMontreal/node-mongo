@@ -36,7 +36,7 @@ that point since the incremental compilation is already done by this script.`;
     this.logger.info(
       `\n==========================================\n` +
         `Starting incremental compilation...\n` +
-        `==========================================\n`
+        `==========================================\n`,
     );
     const projectName = require(configs.libRoot + '/package.json').namae;
     let ignoreNextCompilationComplete = false;
@@ -94,7 +94,7 @@ that point since the incremental compilation is already done by this script.`;
           ],
           {
             outputHandler,
-          }
+          },
         );
       } catch (err) {
         // ==========================================

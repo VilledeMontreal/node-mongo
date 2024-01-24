@@ -89,7 +89,7 @@ export class MongoUpdater implements IMongoUpdater {
      */
     private mongoSchemaUpdatesDirPath: string,
     private lockMaxAgeSeconds: number,
-    private appSchemaCollectionName: string
+    private appSchemaCollectionName: string,
   ) {}
 
   public async installAppSchemaCollection(): Promise<any> {
@@ -98,7 +98,7 @@ export class MongoUpdater implements IMongoUpdater {
       // tslint:disable-next-line: prefer-template
       logger.info(' > Installing the "' + this.appSchemaCollectionName + '" collection.');
       const collection: MongoDb.Collection = await this.mongoDb.createCollection(
-        this.appSchemaCollectionName
+        this.appSchemaCollectionName,
       );
 
       // ==========================================
@@ -162,13 +162,13 @@ export class MongoUpdater implements IMongoUpdater {
     await appSchemaCollection.updateOne({}, { $set: { version: newVersion } });
     // tslint:disable-next-line: prefer-template
     logger.info(
-      ' > MongoDB App Schema updagred from version ' + currentVersion + ' to version ' + newVersion
+      ' > MongoDB App Schema updagred from version ' + currentVersion + ' to version ' + newVersion,
     );
   }
 
   public async getAppSchemaUpdateFiles(
     currentAppSchemaVersion: string,
-    targetAppSchemaVersion: string
+    targetAppSchemaVersion: string,
   ): Promise<string[]> {
     return new Promise<string[]>((resolve, reject) => {
       fs.readdir(this.getAppSchemaFilesDirPath(), (err, files) => {
@@ -206,7 +206,7 @@ export class MongoUpdater implements IMongoUpdater {
   public async applyAppSchemaUpdates(currentVersion: string, newVersion: string): Promise<void> {
     const updateFileNames: string[] = await this.getAppSchemaUpdateFiles(
       currentVersion,
-      newVersion
+      newVersion,
     );
     if (updateFileNames.length > 0) {
       for (const updateFileName of updateFileNames) {
@@ -224,7 +224,7 @@ export class MongoUpdater implements IMongoUpdater {
         if (!isFunction(updateFunction)) {
           return Promise.reject(
             'The default export for an app schema update file must be a function! Was not for file : ' +
-              updateFilePath
+              updateFilePath,
           );
         }
 
@@ -269,7 +269,7 @@ export class MongoUpdater implements IMongoUpdater {
           lock: true,
           lockTimestamp: new Date().getTime(),
         },
-      }
+      },
     );
 
     if (document.value !== null) {
@@ -301,7 +301,7 @@ export class MongoUpdater implements IMongoUpdater {
             lock: true,
             lockTimestamp: new Date().getTime(),
           },
-        }
+        },
       );
 
       // ==========================================
@@ -331,7 +331,7 @@ export class MongoUpdater implements IMongoUpdater {
           lock: false,
           lockTimestamp: 0,
         },
-      }
+      },
     );
 
     if (document.value !== null) {
@@ -345,7 +345,7 @@ export class MongoUpdater implements IMongoUpdater {
 
   public async checkInstallation(): Promise<void> {
     logger.info(
-      `Validating that the "${this.appSchemaCollectionName}" collection required by the application has been installed.`
+      `Validating that the "${this.appSchemaCollectionName}" collection required by the application has been installed.`,
     );
     const collections: any[] = await this.mongoDb
       .listCollections({ name: this.appSchemaCollectionName })
@@ -353,12 +353,12 @@ export class MongoUpdater implements IMongoUpdater {
 
     if (collections.length === 0) {
       logger.info(
-        ` > The "${this.appSchemaCollectionName}" collection was not found... Starting a new installation.`
+        ` > The "${this.appSchemaCollectionName}" collection was not found... Starting a new installation.`,
       );
       await this.installAppSchemaCollection();
     } else {
       logger.info(
-        ` > The "${this.appSchemaCollectionName}" collection was found. No installation required.`
+        ` > The "${this.appSchemaCollectionName}" collection was found. No installation required.`,
       );
     }
   }
@@ -379,7 +379,7 @@ export class MongoUpdater implements IMongoUpdater {
         if (semver.gte(currentAppSchemaVersion, targetVersion)) {
           // tslint:disable-next-line: prefer-template
           logger.info(
-            ' > Current database app schema is up to date : ' + currentAppSchemaVersion + ').'
+            ' > Current database app schema is up to date : ' + currentAppSchemaVersion + ').',
           );
           return;
         }
@@ -395,7 +395,7 @@ export class MongoUpdater implements IMongoUpdater {
           const wait = 1000;
           logger.warning(
             `The lock can't be acquired. The maximum age it can be before being considered ` +
-              `to be too old is ${this.lockMaxAgeSeconds} seconds. Waiting for ${wait} milliseconds...`
+              `to be too old is ${this.lockMaxAgeSeconds} seconds. Waiting for ${wait} milliseconds...`,
           );
           await utils.sleep(wait);
         } else {
