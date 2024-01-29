@@ -39,7 +39,7 @@ describe('Mongo Updater', () => {
       mongoDb,
       testconfig.updater.mongoSchemaUpdatesDirPath,
       testconfig.updater.lockMaxAgeSeconds,
-      testconfig.updater.appSchemaCollectionName
+      testconfig.updater.appSchemaCollectionName,
     );
   });
 
@@ -101,7 +101,7 @@ describe('Mongo Updater', () => {
       assert.strictEqual(collections[0].name, testconfig.updater.appSchemaCollectionName);
 
       const schema: MongoDb.Collection = mongoDb.collection(
-        testconfig.updater.appSchemaCollectionName
+        testconfig.updater.appSchemaCollectionName,
       );
       const schemaDb: any[] = await schema.find().toArray();
       assert.strictEqual(schemaDb[0].version, '0.0.0');
@@ -118,7 +118,7 @@ describe('Mongo Updater', () => {
   describe('lock', () => {
     it('lock should be equal to false', async () => {
       const schema: MongoDb.Collection = mongoDb.collection(
-        testconfig.updater.appSchemaCollectionName
+        testconfig.updater.appSchemaCollectionName,
       );
       const schemaDb: any[] = await schema.find().toArray();
       assert.strictEqual(schemaDb[0].lock, false);
@@ -131,7 +131,7 @@ describe('Mongo Updater', () => {
 
     it('lock should be equal to true', async () => {
       const schema: MongoDb.Collection = mongoDb.collection(
-        testconfig.updater.appSchemaCollectionName
+        testconfig.updater.appSchemaCollectionName,
       );
       const schemaDb: any[] = await schema.find().toArray();
       assert.strictEqual(schemaDb[0].lock, true);
@@ -146,7 +146,7 @@ describe('Mongo Updater', () => {
   describe('unlock', () => {
     it('lock should be equal to true', async () => {
       const schema: MongoDb.Collection = mongoDb.collection(
-        testconfig.updater.appSchemaCollectionName
+        testconfig.updater.appSchemaCollectionName,
       );
       const schemaDb: any[] = await schema.find().toArray();
       assert.strictEqual(schemaDb[0].lock, true);
@@ -159,7 +159,7 @@ describe('Mongo Updater', () => {
 
     it('lock should be equal to false', async () => {
       const schema: MongoDb.Collection = mongoDb.collection(
-        testconfig.updater.appSchemaCollectionName
+        testconfig.updater.appSchemaCollectionName,
       );
       const schemaDb: any[] = await schema.find().toArray();
       assert.strictEqual(schemaDb[0].lock, false);
@@ -170,7 +170,7 @@ describe('Mongo Updater', () => {
       assert.strictEqual(isUnlocked, false);
 
       const schema: MongoDb.Collection = mongoDb.collection(
-        testconfig.updater.appSchemaCollectionName
+        testconfig.updater.appSchemaCollectionName,
       );
       const schemaDb: any[] = await schema.find().toArray();
       assert.strictEqual(schemaDb[0].lock, false);
