@@ -54,7 +54,7 @@ export class MongoUtils {
   public async mockMongoose(
     mochaInstance: mocha.Context,
     mongoServerVersion: string,
-    useReplSet = false
+    useReplSet = false,
   ): Promise<MongoMemoryServer | MongoMemoryReplSet> {
     // ==========================================
     // We only mock the database if it's
@@ -96,7 +96,7 @@ export class MongoUtils {
             `The "mocha" parameter passed to the "mockMongoose(...)" method ` +
               `doesn't seems to be of the correct type. Make sure the function in which you ` +
               `call "mockMongoose(...)" is itself a *regular* function, not an *arrow* function. ` +
-              `Have a look at https://github.com/mochajs/mocha/issues/2018 for more infos.`
+              `Have a look at https://github.com/mochajs/mocha/issues/2018 for more infos.`,
           );
         }
 
@@ -219,7 +219,7 @@ export class MongoUtils {
    */
   public convertMongoOrMongooseErrorToApiError(
     err: any,
-    publicMessage: string
+    publicMessage: string,
   ): ApiErrorAndInfo | any {
     if (!err) {
       return createServerError('Empty error object');
@@ -239,7 +239,7 @@ export class MongoUtils {
       if (errClean.code === constants.mongo.mongoErrorCodes.DUPLICATE_KEY) {
         return createError(
           globalConstants.errors.apiGeneralErrors.codes.DUPLICATE_KEY,
-          publicMessage
+          publicMessage,
         )
           .httpStatus(HttpStatusCodes.CONFLICT)
           .publicMessage(publicMessage)

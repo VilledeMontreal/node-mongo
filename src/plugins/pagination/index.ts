@@ -3,7 +3,7 @@ import { IPaginateOptions } from './specs/IPaginateOptions';
 function paginate(
   q: any,
   options: IPaginateOptions,
-  callback: (error: Error, result: any) => void
+  callback: (error: Error, result: any) => void,
 ) {
   const optionsClean = PaginateBuilder.getOptions((paginate as any).options, options);
 
@@ -36,7 +36,7 @@ export class PaginateBuilder {
   public static executeQueries(
     model: any,
     query: any,
-    options: IPaginateOptions
+    options: IPaginateOptions,
   ): [Promise<any[]>, Promise<number>] {
     const { select, sort, populate, lean, leanWithId, limit, offset } = options;
     let itemsQuery: any;
@@ -62,7 +62,7 @@ export class PaginateBuilder {
   public static processResult(
     promises: any[],
     options: IPaginateOptions,
-    callback: (error: Error, result: any) => void
+    callback: (error: Error, result: any) => void,
   ): Promise<any> {
     const { lean, leanWithId, limit, offset } = options;
     return new Promise((resolve, reject) => {
@@ -94,7 +94,7 @@ export class PaginateBuilder {
             return callback(error, null);
           }
           reject(error);
-        }
+        },
       );
     });
   }
