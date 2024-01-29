@@ -13,7 +13,7 @@ let mongooseConnection: mongoose.Connection;
 async function doInitMongoose(
   mongooseConfigClean: MongooseConfigs,
   resolve: (value: mongoose.Connection) => void,
-  reject: (reason?: any) => void
+  reject: (reason?: any) => void,
 ): Promise<void> {
   let connectionString = mongooseConfigClean.connectionString;
 
@@ -26,7 +26,7 @@ async function doInitMongoose(
     // ==========================================
     const mongoServer = await mongoUtils.mockMongoose(
       null,
-      mongooseConfigClean.mockServer.serverVersion
+      mongooseConfigClean.mockServer.serverVersion,
     );
 
     connectionString = mongoServer.getUri();
@@ -113,7 +113,7 @@ async function checkForUpdates(mongooseConfig: IMongooseConfigs): Promise<void> 
     connection.db,
     mongooseConfig.updater.mongoSchemaUpdatesDirPath,
     mongooseConfig.updater.lockMaxAgeSeconds,
-    mongooseConfig.updater.appSchemaCollectionName
+    mongooseConfig.updater.appSchemaCollectionName,
   );
   await updater.checkInstallation();
   await updater.checkUpdates();

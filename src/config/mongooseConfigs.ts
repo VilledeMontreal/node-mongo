@@ -126,7 +126,7 @@ export class MongooseConfigs implements IMongooseConfigs {
     if (!_.isNil(overridingConfigs.updater.lockMaxAgeSeconds)) {
       if (!utils.isIntegerValue(overridingConfigs.updater.lockMaxAgeSeconds, true, false)) {
         throw new Error(
-          `The updater.lockMaxAgeSeconds config is not valid : ${overridingConfigs.updater.lockMaxAgeSeconds}`
+          `The updater.lockMaxAgeSeconds config is not valid : ${overridingConfigs.updater.lockMaxAgeSeconds}`,
         );
       }
       this.updater.lockMaxAgeSeconds = Number(overridingConfigs.updater.lockMaxAgeSeconds);
@@ -138,7 +138,7 @@ export class MongooseConfigs implements IMongooseConfigs {
         utils.isBlank(overridingConfigs.updater.appSchemaCollectionName)
       ) {
         throw new Error(
-          `The appSchemaCollectionName config is not valid : ${overridingConfigs.updater.appSchemaCollectionName}`
+          `The appSchemaCollectionName config is not valid : ${overridingConfigs.updater.appSchemaCollectionName}`,
         );
       }
       this.updater.appSchemaCollectionName = overridingConfigs.updater.appSchemaCollectionName;
@@ -147,7 +147,7 @@ export class MongooseConfigs implements IMongooseConfigs {
     if (!_.isNil(overridingConfigs.applyUpdates)) {
       if (!_.isBoolean(overridingConfigs.applyUpdates)) {
         throw new Error(
-          `The applyUpdates config must be a boolean: ${overridingConfigs.applyUpdates}`
+          `The applyUpdates config must be a boolean: ${overridingConfigs.applyUpdates}`,
         );
       }
       this.applyUpdates = overridingConfigs.applyUpdates;
@@ -159,20 +159,20 @@ export class MongooseConfigs implements IMongooseConfigs {
         utils.isBlank(overridingConfigs.connectionString)
       ) {
         throw new Error(
-          `The connectionString config is not valid : ${overridingConfigs.connectionString}`
+          `The connectionString config is not valid : ${overridingConfigs.connectionString}`,
         );
       }
       this.connectionString = overridingConfigs.connectionString;
     } else {
       logger.warning(
-        `No "connectionString" config was provided: a *mocked* Mongo server will be used!`
+        `No "connectionString" config was provided: a *mocked* Mongo server will be used!`,
       );
     }
 
     if (!_.isNil(overridingConfigs.connectionOptions)) {
       if (!_.isObject(overridingConfigs.connectionOptions)) {
         throw new Error(
-          `The connectionOptions config is not valid : ${overridingConfigs.connectionString}`
+          `The connectionOptions config is not valid : ${overridingConfigs.connectionString}`,
         );
       }
       this.connectionOptions = overridingConfigs.connectionOptions;
@@ -187,7 +187,7 @@ export class MongooseConfigs implements IMongooseConfigs {
         utils.isBlank(overridingConfigs.mockServer.serverVersion)
       ) {
         throw new Error(
-          `The mockServer.serverVersion config is not valid : ${overridingConfigs.mockServer.serverVersion}`
+          `The mockServer.serverVersion config is not valid : ${overridingConfigs.mockServer.serverVersion}`,
         );
       }
       this.mockServer.serverVersion = overridingConfigs.mockServer.serverVersion;

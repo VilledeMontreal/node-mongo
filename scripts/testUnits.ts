@@ -29,7 +29,7 @@ export class TestUnitsScript extends ScriptBase<Options> {
       {
         default: `output/test-results/report.xml`,
         validator: program.STRING,
-      }
+      },
     );
   }
 
@@ -58,7 +58,7 @@ export class TestUnitsScript extends ScriptBase<Options> {
       cmdArgs.push(`${configs.libRoot}/node_modules/nyc/bin/nyc`);
     } else {
       this.logger.warn(
-        `The "nyc" direct dependency was not found in your project. The tests will be run using Mocha only!`
+        `The "nyc" direct dependency was not found in your project. The tests will be run using Mocha only!`,
       );
     }
 
@@ -109,7 +109,7 @@ export class TestUnitsScript extends ScriptBase<Options> {
       });
 
       this.logger.info(
-        "   \u21b3  type 'run show-coverage' (or './run show-coverage' on Linux/Mac) to display the HTML report"
+        "   \u21b3  type 'run show-coverage' (or './run show-coverage' on Linux/Mac) to display the HTML report",
       );
     } catch (err) {
       throw new Error('Some unit tests failed');

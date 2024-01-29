@@ -32,7 +32,7 @@ describe('plugin pagination', () => {
     // Makes sure Mongoose is mocked, but not in Jenkins as we will start a dedicated mongodb container.
     const mockedDb = await mongoUtils.mockMongoose(
       this,
-      constants.testsConfig.mockServer.serverVersion
+      constants.testsConfig.mockServer.serverVersion,
     );
     const connString = mockedDb.getUri();
     await mongoose.connect(connString);
